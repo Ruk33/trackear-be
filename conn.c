@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <pthread.h>
 #include "lib.h"
 #include "conn.h"
 
@@ -48,23 +49,29 @@ static void conn_request_handle
         send_status = send(
                 conn_socket,
                 raw_response,
-                strlen((const char *) raw_response) + 1,
+                strlen((const char *) raw_response),
                 0
         );
 
         if (send_status == -1) {
                 printf("Error while sending response to connection.\n");
                 printf("Error: %d.\n", errno);
+                return;
         }
+
+        printf("Response sent.");
 }
 
-static void conn_handle_requests
-(int conn_socket)
+static void *conn_handle_requests
+(void *conn_socket_p)
 {
-        assert(conn_socket);
+        assert(conn_socket_p);
 
+        int conn_socket = 0;
         unsigned char buffer[MAX_REQUEST_SIZE];
         size_t request_size = 0;
+
+        conn_socket = *((int *) conn_socket_p);
 
         memset(buffer, 0, MAX_REQUEST_SIZE);
 
@@ -75,20 +82,28 @@ static void conn_handle_requests
                 printf("Request bigger than supported. Ignoring request.\n");
                 printf("Requested = %ld.\n", request_size);
                 printf("Maximum supported = %d.\n", MAX_REQUEST_SIZE);
-                conn_close(conn_socket);
-                return;
+        } else {
+                conn_request_handle(conn_socket, buffer, request_size);
         }
 
-        conn_request_handle(conn_socket, buffer, request_size);
-
         conn_close(conn_socket);
+
+        free(conn_socket_p);
+
+        return NULL;
 }
 
-void conn_new
+void conn_handle_in_new_thread
 (int conn_socket)
 {
         assert(conn_socket);
 
+        pthread_t thread = 0;
+        int *conn_socket_p = NULL;
+
+        conn_socket_p = calloc(1, sizeof(*conn_socket_p));
+        *conn_socket_p = conn_socket;
+
         printf("New connection accepted.\n");
-        conn_handle_requests(conn_socket);
+        pthread_create(&thread, NULL, &conn_handle_requests, conn_socket_p);
 }

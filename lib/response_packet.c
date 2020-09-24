@@ -47,7 +47,7 @@ void response_packet
         // write_buffer(dest, dest_size, "ETag: \"51142bc1-7449-479b075b2891b\"\n");
         write_buffer(dest, dest_size, "Accept-Ranges: bytes\n");
         write_buffer(dest, dest_size, "Content-Length: ");
-        snprintf(content_length, sizeof(content_length), "%ld\n", strlen(r->body) + 1);
+        snprintf(content_length, sizeof(content_length), "%ld\n", strlen(r->body));
         write_buffer(dest, dest_size, content_length);
         write_buffer(dest, dest_size, "Content-Type: text/json\n");
         write_buffer(dest, dest_size, "\n");

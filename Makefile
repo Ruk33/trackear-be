@@ -1,5 +1,5 @@
 TARGET = trackear
-LIBS = -lm -ldl
+LIBS = -lm -ldl -lpthread
 CC = gcc
 CFLAGS = -g -Wall
 

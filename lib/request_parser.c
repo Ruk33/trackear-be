@@ -5,18 +5,19 @@
 #include "static_config.h"
 #include "request_parser.h"
 
+static char GET[] = "GET";
+static char POST[] = "POST";
+
 static int request_is_get
 (unsigned char *raw_request, size_t request_size)
 {
         assert(raw_request);
 
-        char get[] = "GET";
-
-        if (request_size < sizeof(get)) {
+        if (request_size < sizeof(GET)) {
                 return 0;
         }
 
-        return memcmp(get, raw_request, strlen(get)) == 0;
+        return memcmp(GET, raw_request, strlen(GET)) == 0;
 }
 
 static int request_is_post
@@ -24,13 +25,11 @@ static int request_is_post
 {
         assert(raw_request);
 
-        char post[] = "POST";
-
-        if (request_size < sizeof(post)) {
+        if (request_size < sizeof(POST)) {
                 return 0;
         }
 
-        return memcmp(post, raw_request, strlen(post)) == 0;
+        return memcmp(POST, raw_request, strlen(POST)) == 0;
 }
 
 static void request_parse_type
@@ -40,9 +39,6 @@ static void request_parse_type
         assert(raw_request);
         assert(request_size);
 
-        char get[] = "GET";
-        char post[] = "POST";
-
         int is_get = 0;
         int is_post = 0;
 
@@ -51,15 +47,15 @@ static void request_parse_type
 
         memset(dest->type, 0, sizeof(dest->type));
 
-        assert(sizeof(dest->type) > sizeof(get));
-        assert(sizeof(dest->type) > sizeof(post));
+        assert(sizeof(dest->type) > sizeof(GET));
+        assert(sizeof(dest->type) > sizeof(POST));
 
         if (is_get) {
-                memcpy(dest->type, get, sizeof(get));
+                memcpy(dest->type, GET, sizeof(GET));
         }
 
         if (is_post) {
-                memcpy(dest->type, post, sizeof(post));
+                memcpy(dest->type, POST, sizeof(POST));
         }
 }
 

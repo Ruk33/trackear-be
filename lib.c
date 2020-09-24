@@ -59,6 +59,8 @@ static void load_lib_if_required
                 dlclose(lib);
         }
 
+        printf("Change detected in lib, loading latest version...\n");
+
         DLEXPR_OR_ERR(lib = dlopen(LIB_PATH, RTLD_LAZY));
         handle_request = NULL;
 

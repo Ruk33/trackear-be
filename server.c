@@ -48,8 +48,7 @@ static void server_accept_connections
                 return;
         }
 
-        // In new thread
-        conn_new(client_socket);
+        conn_handle_in_new_thread(client_socket);
 }
 
 void server_start

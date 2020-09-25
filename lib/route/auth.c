@@ -5,7 +5,7 @@
 #include "../request.h"
 #include "../response.h"
 #include "../dto/user.h"
-#include "../storage/user.h"
+#include "../dao/user.h"
 #include "auth.h"
 
 void route_auth
@@ -25,7 +25,7 @@ void route_auth
                 users[i] = api->malloc(sizeof(*users[i]));
         }
 
-        storage_user_list(api, users, user_count);
+        dao_user_list(api, users, user_count);
 
         memset(res->body, 0, sizeof(res->body));
         snprintf(

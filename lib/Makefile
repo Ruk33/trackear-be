@@ -12,14 +12,14 @@ SOURCES = \
 	$(wildcard *.c) \
 	$(wildcard dto/*.c) \
 	$(wildcard route/*.c) \
-	$(wildcard storage/*.c)
+	$(wildcard dao/psql/*.c)
 
 OBJECTS = $(SOURCES:.c=.o)
 HEADERS = \
 	$(wildcard *.h) \
 	$(wildcard dto/*.h) \
 	$(wildcard route/*.h) \
-	$(wildcard storage/*.h)
+	$(wildcard dao/*.h)
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@

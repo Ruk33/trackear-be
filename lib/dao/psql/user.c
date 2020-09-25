@@ -1,12 +1,12 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../platform_api.h"
-#include "../../data_structure/row.h"
-#include "../dto/user.h"
-#include "user.h"
+#include "../../platform_api.h"
+#include "../../../data_structure/row.h"
+#include "../../dto/user.h"
+#include "../user.h"
 
-void storage_user_list
+void dao_user_list
 (struct platform_api *api, struct user *users[], size_t user_size)
 {
         assert(api);

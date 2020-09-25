@@ -15,6 +15,7 @@ SOURCES = \
 	$(wildcard dao/psql/*.c)
 
 OBJECTS = $(SOURCES:.c=.o)
+
 HEADERS = \
 	$(wildcard *.h) \
 	$(wildcard dto/*.h) \

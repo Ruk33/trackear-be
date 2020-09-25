@@ -49,7 +49,7 @@ void response_packet
         write_buffer(dest, dest_size, "Content-Length: ");
         snprintf(content_length, sizeof(content_length), "%ld\n", strlen(r->body));
         write_buffer(dest, dest_size, content_length);
-        write_buffer(dest, dest_size, "Content-Type: text/json\n");
+        write_buffer(dest, dest_size, "Content-Type: text/json; charset=utf-8\n");
         write_buffer(dest, dest_size, "\n");
         write_buffer(dest, dest_size, r->body);
 }

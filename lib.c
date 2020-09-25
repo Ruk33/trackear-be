@@ -5,6 +5,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <dlfcn.h>
+#include "data_structure/row.h"
+#include "memory.h"
+#include "storage.h"
 #include "lib.h"
 
 #define LIB_PATH "./lib/libtrackear.so"
@@ -16,8 +19,20 @@
                 }                                       \
         } while (0);
 
+typedef void* (* malloc_cb)
+(size_t how_much_memory);
+
+typedef void (* free_cb)
+(void *memory);
+
+typedef void (* storage_query_cb)
+(char *query, struct row **results, size_t result_size);
+
 typedef void (*handle_request_cb)
 (
+        malloc_cb m,
+        free_cb f,
+        storage_query_cb s,
         unsigned char *raw_request,
         size_t raw_request_size,
         unsigned char *response,
@@ -93,6 +108,9 @@ void lib_handle_request
         }
 
         handle_request(
+                &memory_alloc,
+                &memory_free,
+                &storage_query,
                 raw_request,
                 raw_request_size,
                 response,

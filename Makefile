@@ -8,9 +8,9 @@ CFLAGS = -g -Wall
 default: $(TARGET)
 all: default
 
-SOURCES = $(wildcard *.c)
+SOURCES = $(wildcard *.c) $(wildcard data_structure/*.c) $(wildcard util/*.c)
 OBJECTS = $(SOURCES:.c=.o)
-HEADERS = $(wildcard *.h)
+HEADERS = $(wildcard *.h) $(wildcard data_structure/*.h) $(wildcard util/*.h)
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@

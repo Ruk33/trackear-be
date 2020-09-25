@@ -1,8 +1,10 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include "platform_api.h"
 #include "request.h"
 #include "response.h"
+#include "route/auth.h"
 #include "router.h"
 
 static int request_is_for_route
@@ -19,15 +21,17 @@ static int request_is_for_route
 }
 
 void router_handle_request
-(struct request *req, struct response *res)
+(struct platform_api *api, struct request *req, struct response *res)
 {
         assert(req);
         assert(res);
 
-        strcat(res->body, "Trackear");
-
         if (request_is_for_route(req, "GET", "/")) {
+                return;
+        }
 
+        if (request_is_for_route(req, "GET", "/auth")) {
+                route_auth(api, req, res);
                 return;
         }
 }
